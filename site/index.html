@@ -88,6 +88,28 @@
       <p id="gateMsg" style="margin-bottom:0;"></p>
     </section>
 
+    <section class="section card">
+      <h3 style="margin-top:0;">Runbook Summary</h3>
+      <p style="margin-top:0;color:var(--muted)">Operational triage for replay and dead-letter incidents.</p>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Triage Trigger</div>
+          <div style="font-size:13px;margin-top:6px;"><code>syncStatus=error</code> for 5+ min</div>
+        </div>
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Escalation Signal</div>
+          <div style="font-size:13px;margin-top:6px;">Dead-letter growth after 2 requeue attempts</div>
+        </div>
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Recovery Goal</div>
+          <div style="font-size:13px;margin-top:6px;">Queue drains to zero and status returns to idle</div>
+        </div>
+      </div>
+      <p style="margin:10px 0 0; font-size:13px;">
+        Full guide: <a href="https://seansabado.github.io/velatos-showcase/docs/operations-runbook.html" target="_blank" rel="noopener noreferrer">Operations Runbook</a>
+      </p>
+    </section>
+
     <footer>
       This page is a static educational demo. No backend calls, no production logic, no real data.
     </footer>
