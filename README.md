@@ -37,6 +37,9 @@ Suggested GitHub repository tagline (About box):
 
 Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
 
+Suggested GitHub social preview asset:
+[docs/assets/social-preview.svg](docs/assets/social-preview.svg)
+
 ---
 
 ## Visual Preview
@@ -112,6 +115,8 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 - Observability model: [docs/observability.md](docs/observability.md)
 - Data contracts: [docs/data-contracts.md](docs/data-contracts.md)
 - Interview pack: [docs/interview-pack.md](docs/interview-pack.md)
+- Architecture evolution log: [docs/evolution.md](docs/evolution.md)
+- Demo video outline: [docs/demo-video-outline.md](docs/demo-video-outline.md)
 - One-page recruiter brief: [docs/case-study.md](docs/case-study.md)
 
 ---
@@ -168,8 +173,11 @@ docs/                   Architecture and design decision records
   observability.md      Golden signals, alerts, and dashboard model
   data-contracts.md     Stable event payload contracts across modules
   interview-pack.md     Likely system-design questions and answer outlines
+  evolution.md          How the architecture matured over time
+  demo-video-outline.md 90-second walkthrough script for reviewers
   assets/               Visual assets for README and docs
     architecture-banner.svg
+    social-preview.svg
     ui-preview.svg
   architecture.md       High-level system diagram and surface map
   module-design.md      How modules are bounded and composed

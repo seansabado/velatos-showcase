@@ -1,0 +1,41 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0D2D2C"/>
+      <stop offset="1" stop-color="#245A57"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F5FAF8"/>
+      <stop offset="1" stop-color="#E7F0ED"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <circle cx="1130" cy="70" r="180" fill="#5BB5A6" fill-opacity="0.18"/>
+  <circle cx="90" cy="570" r="190" fill="#7FD2C5" fill-opacity="0.14"/>
+
+  <text x="72" y="98" fill="#CDEEE7" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="600">VelatOS Showcase</text>
+  <text x="72" y="158" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700">Enterprise ERP Architecture</text>
+  <text x="72" y="214" fill="#D4ECE6" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="500">Multi-tenant isolation, offline-first operations, and auditable workflows</text>
+
+  <rect x="72" y="290" width="340" height="220" rx="18" fill="url(#panel)"/>
+  <text x="96" y="330" fill="#183E3C" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Proof</text>
+  <text x="96" y="370" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">9 test suites</text>
+  <text x="96" y="402" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">High coverage</text>
+  <text x="96" y="434" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">CI + Pages deploy</text>
+  <text x="96" y="466" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Incident + runbook artifacts</text>
+
+  <rect x="470" y="290" width="340" height="220" rx="18" fill="url(#panel)"/>
+  <text x="494" y="330" fill="#183E3C" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Reliability</text>
+  <text x="494" y="370" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Offline queue + retries</text>
+  <text x="494" y="402" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Dead-letter handling</text>
+  <text x="494" y="434" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Replay-safe idempotency</text>
+  <text x="494" y="466" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Scenario-driven live demo</text>
+
+  <rect x="868" y="290" width="340" height="220" rx="18" fill="url(#panel)"/>
+  <text x="892" y="330" fill="#183E3C" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Security</text>
+  <text x="892" y="370" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Token-claim tenant boundary</text>
+  <text x="892" y="402" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Permission matrix</text>
+  <text x="892" y="434" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Runtime validation</text>
+  <text x="892" y="466" fill="#2F5B57" font-family="Segoe UI, Arial, sans-serif" font-size="18">Append-only audit design</text>
+</svg>
