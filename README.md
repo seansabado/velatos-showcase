@@ -128,6 +128,14 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 ---
 
+## Demo Video
+
+- Video link: _coming soon_
+- Recording outline: [docs/demo-video-outline.md](docs/demo-video-outline.md)
+- Recommended placement once recorded: GitHub README + repository About website/video link
+
+---
+
 ## What This Repo Demonstrates
 
 | Area | Pattern |
