@@ -5,7 +5,7 @@
 Created by  
 **Sean Raynon**  
 Founder & CTO — VelatOS  
-https://-m-msilver.co.jp  
+https://m-msilver.co.jp  
 https://www.linkedin.com/in/seanraynon/
 
 ---
