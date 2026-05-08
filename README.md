@@ -26,6 +26,8 @@ Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
 
 ## Hiring Signals
 
+[![Build](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Pages](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml) [![Coverage](https://img.shields.io/badge/coverage-95.23%25-brightgreen)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0d6c63)](https://seansabado.github.io/velatos-showcase/)
+
 - CI-enforced quality gates: typecheck + coverage tests on push and PR
 - Enterprise architecture depth: multi-tenant isolation, offline-first queueing, and append-only audit trail
 - Production-style domain modeling: POS state machine, RMA lifecycle FSM, and finance reconciliation gates
