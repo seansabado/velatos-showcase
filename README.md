@@ -1,5 +1,7 @@
 # velatos-showcase
 
+![CI](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml/badge.svg)
+
 ---
 
 Created by  
@@ -24,11 +26,14 @@ Think of this as an architectural portfolio: the kind of thinking that goes into
 |---|---|
 | **Module boundaries** | POS, Manager Ops, Staff, Admin as isolated vertical slices |
 | **Machine state** | XState-style offline-capable FSM for shift sessions and order lifecycle |
+| **RMA lifecycle** | 9-state FSM with transition guards for return/repair/exchange flows |
 | **Multi-tenancy** | Tenant guard at the function layer; per-tenant data isolation |
 | **Internationalization** | JA/EN dual-language strategy with type-safe translation keys |
 | **Offline-first** | Local queue + reconciliation pattern for unreliable connectivity |
 | **Audit logging** | Append-only audit trail with actor, action, tenant, and timestamp |
 | **Cloud functions** | Callable function patterns: auth → tenant guard → business logic → audit |
+| **Architecture decisions** | ADRs documenting the "why" behind key design choices |
+| **Unit tests** | Jest tests covering FSM guards and tenant isolation logic |
 | **Shared infrastructure** | Typed hooks, utilities, and domain types used across all surfaces |
 
 ---
@@ -56,12 +61,22 @@ docs/                   Architecture and design decision records
   multi-tenant-erp.md   Tenant isolation and data partitioning
   data-governance.md    Audit logging, access control, PII boundaries
   cloud-functions-patterns.md  Server-side callable function patterns
+  decisions/            Architecture Decision Records (ADRs)
+    adr-001-tenant-isolation.md
+    adr-002-offline-first.md
+    adr-003-japanese-primary-locale.md
+  sequence-diagrams/    Mermaid sequence diagrams for key flows
+    pos-order-flow.md
+    offline-sync-flow.md
+    rma-lifecycle.md
 
 src/
   example-pos/          Fake POS surface: machine state, shift, orders
   example-manager/      Fake manager dashboard: branch metrics, approvals
   example-staff/        Fake staff panel: punch-in/out, schedule view
+  example-rma/          Fake RMA module: 9-state FSM, line inspection
   example-functions/    Fake Cloud Functions: auth, tenant guard, audit
+    __tests__/          Unit tests for tenant guard and callable patterns
   i18n/                 Fake JA/EN translation files + loader
   shared/               Cross-surface hooks, utils, and TypeScript types
 ```
@@ -75,10 +90,9 @@ Start with [`docs/architecture.md`](docs/architecture.md) for the big picture, t
 These are TypeScript/React examples — they illustrate patterns, not a deployable app.
 
 ```bash
-# No build step required — browse the source directly
-# If you want type-checking:
-npm install typescript
-npx tsc --noEmit
+npm install
+npm run typecheck   # zero-error TypeScript check
+npm test            # Jest unit tests
 ```
 
 ---
