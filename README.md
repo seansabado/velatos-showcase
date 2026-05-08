@@ -18,6 +18,10 @@ This repository is a **safe, non-proprietary showcase** of enterprise ERP archit
 
 Think of this as an architectural portfolio: the kind of thinking that goes into a serious, production-grade ERP platform targeting Japanese boutique retail.
 
+![VelatOS Architecture Banner](docs/assets/architecture-banner.svg)
+
+Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
+
 ---
 
 ## What This Repo Demonstrates
@@ -57,6 +61,9 @@ All data, IDs, and logic in this repo are **fabricated for demonstration purpose
 
 ```
 docs/                   Architecture and design decision records
+  case-study.md         One-page recruiter-focused architecture brief
+  assets/               Visual assets for README and docs
+    architecture-banner.svg
   architecture.md       High-level system diagram and surface map
   module-design.md      How modules are bounded and composed
   i18n-strategy.md      Dual-language (JA/EN) approach
