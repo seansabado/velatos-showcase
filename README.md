@@ -26,6 +26,24 @@ https://www.linkedin.com/in/seanraynon/
 
 ---
 
+## Business Outcomes
+
+- Continuity: offline-first queue and replay patterns reduce checkout disruption during network instability.
+- Risk reduction: token-claim tenant isolation and role-gated actions reduce cross-tenant and privilege misuse risk.
+- Faster recovery: incident walkthrough and runbook artifacts reduce triage ambiguity during replay/dead-letter events.
+- Audit readiness: append-only event and audit patterns make behavior easier to trace and explain.
+- Decision speed: executive summary, proof snapshot, and scenario demo lower reviewer time-to-understanding.
+
+---
+
+## Read Path by Audience
+
+- Recruiter (2-3 min): [README.md](README.md), [docs/case-study.md](docs/case-study.md), live demo at https://seansabado.github.io/velatos-showcase/index.html
+- Engineering Manager (5-10 min): [docs/architecture.md](docs/architecture.md), [docs/security-posture.md](docs/security-posture.md), [docs/incident-walkthrough.md](docs/incident-walkthrough.md), [docs/operations-runbook.md](docs/operations-runbook.md)
+- Architect or CTO (10-15 min): [docs/observability.md](docs/observability.md), [docs/data-contracts.md](docs/data-contracts.md), [docs/known-limits-and-versioning.md](docs/known-limits-and-versioning.md), [docs/adoption-blueprint.md](docs/adoption-blueprint.md), [docs/evolution.md](docs/evolution.md)
+
+---
+
 This repository is a **safe, non-proprietary showcase** of enterprise ERP architecture patterns used in production retail operations software. It demonstrates engineering decisions, module boundaries, offline strategies, multi-tenant isolation, and cloud function patterns — without exposing any real business logic, schemas, or proprietary code.
 
 Think of this as an architectural portfolio: the kind of thinking that goes into a serious, production-grade ERP platform targeting Japanese boutique retail.
@@ -114,6 +132,8 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 - Operations runbook: [docs/operations-runbook.md](docs/operations-runbook.md)
 - Observability model: [docs/observability.md](docs/observability.md)
 - Data contracts: [docs/data-contracts.md](docs/data-contracts.md)
+- Known limits and versioning policy: [docs/known-limits-and-versioning.md](docs/known-limits-and-versioning.md)
+- Adoption blueprint: [docs/adoption-blueprint.md](docs/adoption-blueprint.md)
 - Interview pack: [docs/interview-pack.md](docs/interview-pack.md)
 - Architecture evolution log: [docs/evolution.md](docs/evolution.md)
 - Demo video outline: [docs/demo-video-outline.md](docs/demo-video-outline.md)
@@ -184,6 +204,8 @@ docs/                   Architecture and design decision records
   operations-runbook.md Operational playbook for replay/dead-letter triage
   observability.md      Golden signals, alerts, and dashboard model
   data-contracts.md     Stable event payload contracts across modules
+  known-limits-and-versioning.md Explicit simulation boundaries and contract version policy
+  adoption-blueprint.md Phased rollout plan with risk gates and KPIs
   interview-pack.md     Likely system-design questions and answer outlines
   evolution.md          How the architecture matured over time
   demo-video-outline.md 90-second walkthrough script for reviewers
