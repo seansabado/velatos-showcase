@@ -16,6 +16,16 @@ https://www.linkedin.com/in/seanraynon/
 
 ## Overview
 
+## Executive Summary
+
+- Problem: retail ERP workflows must survive unstable networks, enforce tenant boundaries, and remain auditable.
+- Architecture: modular TypeScript surfaces backed by auth -> tenant guard -> validation -> domain -> audit pipeline.
+- Reliability: offline queue, retry/backoff, dead-letter handling, and idempotent replay protection.
+- Security: token-claim tenant isolation, permission gates, runtime validation, and append-only logging.
+- Proof: CI, 9 test suites, high coverage, ADRs, incident/runbook docs, and a live demo.
+
+---
+
 This repository is a **safe, non-proprietary showcase** of enterprise ERP architecture patterns used in production retail operations software. It demonstrates engineering decisions, module boundaries, offline strategies, multi-tenant isolation, and cloud function patterns — without exposing any real business logic, schemas, or proprietary code.
 
 Think of this as an architectural portfolio: the kind of thinking that goes into a serious, production-grade ERP platform targeting Japanese boutique retail.
@@ -99,6 +109,9 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 - Security posture doc: [docs/security-posture.md](docs/security-posture.md)
 - Incident walkthrough: [docs/incident-walkthrough.md](docs/incident-walkthrough.md)
 - Operations runbook: [docs/operations-runbook.md](docs/operations-runbook.md)
+- Observability model: [docs/observability.md](docs/observability.md)
+- Data contracts: [docs/data-contracts.md](docs/data-contracts.md)
+- Interview pack: [docs/interview-pack.md](docs/interview-pack.md)
 - One-page recruiter brief: [docs/case-study.md](docs/case-study.md)
 
 ---
@@ -152,6 +165,9 @@ docs/                   Architecture and design decision records
   security-posture.md   Threat assumptions, controls, and residual risks
   incident-walkthrough.md  Realistic outage analysis and mitigation narrative
   operations-runbook.md Operational playbook for replay/dead-letter triage
+  observability.md      Golden signals, alerts, and dashboard model
+  data-contracts.md     Stable event payload contracts across modules
+  interview-pack.md     Likely system-design questions and answer outlines
   assets/               Visual assets for README and docs
     architecture-banner.svg
     ui-preview.svg

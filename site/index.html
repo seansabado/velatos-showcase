@@ -66,6 +66,17 @@
     <h1>VelatOS Architecture Showcase</h1>
     <div class="sub">Interactive static demo for GitHub Pages: permissions, offline queue, and reconciliation gates.</div>
 
+    <section class="section card" style="margin-top:0;">
+      <h3 style="margin-top:0;">Scenario Modes</h3>
+      <p style="margin-top:0;color:var(--muted)">Switch the demo into common operational states to tell a stronger system story.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button id="modeNormal">Normal</button>
+        <button id="modeOutage">Network Outage</button>
+        <button id="modeReplayStorm">Replay Storm</button>
+        <button id="modePrivilegeDenied">Privilege Denied</button>
+      </div>
+    </section>
+
     <div class="grid">
       <article class="card">
         <div class="label">Active Role</div>
@@ -144,6 +155,7 @@
       role: 'branch_manager',
       queue: 0,
       variance: -500,
+      online: true,
     };
 
     const roleValue = document.getElementById('roleValue');
@@ -172,7 +184,7 @@
     }
 
     function canCloseDay() {
-      return roleAtLeast(state.role, 'branch_manager') && state.queue === 0;
+      return state.online && roleAtLeast(state.role, 'branch_manager') && state.queue === 0;
     }
 
     function updateUi() {
@@ -187,13 +199,57 @@
       closeDayBtn.disabled = !canCloseDay();
       gateMsg.textContent = canCloseDay()
         ? 'Gate open: role and queue checks passed.'
-        : 'Gate blocked: need branch_manager+ role and empty queue.';
+        : `Gate blocked: need online=${state.online}, branch_manager+ role, and empty queue.`;
 
       toggleRoleBtn.textContent = state.role === 'branch_manager' ? 'Switch to cashier' : 'Switch to branch_manager';
     }
 
     document.getElementById('toggleRole').addEventListener('click', () => {
       state.role = state.role === 'branch_manager' ? 'cashier' : 'branch_manager';
+      updateUi();
+    });
+
+    document.getElementById('modeNormal').addEventListener('click', () => {
+      state.role = 'branch_manager';
+      state.queue = 0;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('normal', 'Healthy operating state loaded');
+      updateUi();
+    });
+
+    document.getElementById('modeOutage').addEventListener('click', () => {
+      state.role = 'branch_manager';
+      state.queue = 3;
+      state.variance = -500;
+      state.online = false;
+      clearTimeline();
+      appendTimeline('queued', 'Network outage forced mutations into local queue');
+      appendTimeline('blocked', 'Shift close blocked until connectivity returns');
+      updateUi();
+    });
+
+    document.getElementById('modeReplayStorm').addEventListener('click', () => {
+      state.role = 'branch_manager';
+      state.queue = 2;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('retrying', 'Replay storm started after reconnect');
+      appendTimeline('deduped', 'Duplicate replay suppressed by idempotency key');
+      appendTimeline('resolved', 'Queue stabilized and audit timeline preserved');
+      updateUi();
+    });
+
+    document.getElementById('modePrivilegeDenied').addEventListener('click', () => {
+      state.role = 'cashier';
+      state.queue = 0;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('denied', 'Cashier attempted manager-only close action');
+      appendTimeline('guarded', 'Permission gate blocked operation');
       updateUi();
     });
 
