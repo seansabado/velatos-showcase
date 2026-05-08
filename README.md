@@ -1,0 +1,92 @@
+# velatos-showcase
+
+---
+
+Created by  
+**Sean Raynon**  
+Founder & CTO — VelatOS  
+https://-m-msilver.co.jp  
+https://www.linkedin.com/in/seanraynon/
+
+---
+
+## Overview
+
+This repository is a **safe, non-proprietary showcase** of enterprise ERP architecture patterns used in production retail operations software. It demonstrates engineering decisions, module boundaries, offline strategies, multi-tenant isolation, and cloud function patterns — without exposing any real business logic, schemas, or proprietary code.
+
+Think of this as an architectural portfolio: the kind of thinking that goes into a serious, production-grade ERP platform targeting Japanese boutique retail.
+
+---
+
+## What This Repo Demonstrates
+
+| Area | Pattern |
+|---|---|
+| **Module boundaries** | POS, Manager Ops, Staff, Admin as isolated vertical slices |
+| **Machine state** | XState-style offline-capable FSM for shift sessions and order lifecycle |
+| **Multi-tenancy** | Tenant guard at the function layer; per-tenant data isolation |
+| **Internationalization** | JA/EN dual-language strategy with type-safe translation keys |
+| **Offline-first** | Local queue + reconciliation pattern for unreliable connectivity |
+| **Audit logging** | Append-only audit trail with actor, action, tenant, and timestamp |
+| **Cloud functions** | Callable function patterns: auth → tenant guard → business logic → audit |
+| **Shared infrastructure** | Typed hooks, utilities, and domain types used across all surfaces |
+
+---
+
+## What This Repo Does NOT Contain
+
+- Real database schemas or Firestore collections from any production system
+- Real API keys, service account credentials, or environment secrets
+- Real business logic, pricing rules, or operational workflows
+- Real customer, employee, or transaction data
+- Any code that could be directly deployed to a production system
+
+All data, IDs, and logic in this repo are **fabricated for demonstration purposes only**.
+
+---
+
+## How To Navigate
+
+```
+docs/                   Architecture and design decision records
+  architecture.md       High-level system diagram and surface map
+  module-design.md      How modules are bounded and composed
+  i18n-strategy.md      Dual-language (JA/EN) approach
+  offline-mode.md       Offline-first patterns and sync strategy
+  multi-tenant-erp.md   Tenant isolation and data partitioning
+  data-governance.md    Audit logging, access control, PII boundaries
+  cloud-functions-patterns.md  Server-side callable function patterns
+
+src/
+  example-pos/          Fake POS surface: machine state, shift, orders
+  example-manager/      Fake manager dashboard: branch metrics, approvals
+  example-staff/        Fake staff panel: punch-in/out, schedule view
+  example-functions/    Fake Cloud Functions: auth, tenant guard, audit
+  i18n/                 Fake JA/EN translation files + loader
+  shared/               Cross-surface hooks, utils, and TypeScript types
+```
+
+Start with [`docs/architecture.md`](docs/architecture.md) for the big picture, then explore the `src/` modules to see the patterns in action.
+
+---
+
+## Running the Examples
+
+These are TypeScript/React examples — they illustrate patterns, not a deployable app.
+
+```bash
+# No build step required — browse the source directly
+# If you want type-checking:
+npm install typescript
+npx tsc --noEmit
+```
+
+---
+
+## License
+
+MIT — feel free to reference these patterns in your own work.
+
+---
+
+> "The architecture of a retail ERP is ultimately about trust boundaries: between cashiers and managers, between branches and head office, between connected and offline states."

@@ -1,0 +1,101 @@
+// src/i18n/ja.json
+// Fake Japanese translations — non-proprietary, for demonstration only
+{
+  "pos": {
+    "shift": {
+      "open_button": "シフト開始",
+      "close_button": "シフト終了",
+      "suspended_label": "一時停止中",
+      "confirm_close": "シフトを終了しますか？",
+      "open_success": "シフトを開始しました",
+      "close_success": "シフトを終了しました"
+    },
+    "order": {
+      "new_button": "新規注文",
+      "confirm_button": "確認",
+      "cancel_button": "キャンセル",
+      "void_button": "返品・取消",
+      "void_reason": {
+        "label": "返品理由",
+        "placeholder": "理由を入力してください"
+      },
+      "payment": {
+        "cash": "現金",
+        "card": "カード",
+        "other": "その他",
+        "total_label": "合計",
+        "tax_label": "消費税（10%）",
+        "subtotal_label": "小計"
+      },
+      "status": {
+        "building": "注文中",
+        "confirming": "確認中",
+        "confirmed": "完了",
+        "voided": "取消済"
+      }
+    },
+    "register": {
+      "label": "レジ",
+      "select_placeholder": "レジを選択してください"
+    }
+  },
+  "manager": {
+    "dashboard": {
+      "title": "ダッシュボード",
+      "transactions_today": "本日の取引数",
+      "gross_revenue": "売上合計",
+      "void_count": "取消件数",
+      "open_exceptions": "未処理の例外"
+    },
+    "exception": {
+      "approve_button": "承認",
+      "reject_button": "却下",
+      "pending_label": "承認待ち",
+      "approved_label": "承認済み",
+      "rejected_label": "却下"
+    },
+    "daily_close": {
+      "button": "日次締め",
+      "confirm": "本日の営業を締めますか？",
+      "success": "日次締めが完了しました"
+    }
+  },
+  "staff": {
+    "punch": {
+      "in_button": "出勤",
+      "out_button": "退勤",
+      "success_in": "出勤しました",
+      "success_out": "退勤しました",
+      "geofence_warning": "勤務地の範囲外です。理由を入力してください。"
+    },
+    "schedule": {
+      "title": "シフト",
+      "no_schedule": "本日のシフトはありません"
+    },
+    "payroll": {
+      "title": "給与",
+      "this_month": "今月の給与"
+    }
+  },
+  "common": {
+    "error": {
+      "network": "通信エラーが発生しました",
+      "unauthorized": "アクセス権限がありません",
+      "not_found": "データが見つかりません",
+      "unexpected": "予期しないエラーが発生しました"
+    },
+    "status": {
+      "loading": "読み込み中...",
+      "saving": "保存中...",
+      "offline": "オフライン",
+      "syncing": "同期中..."
+    },
+    "action": {
+      "save": "保存",
+      "cancel": "キャンセル",
+      "confirm": "確認",
+      "back": "戻る",
+      "close": "閉じる"
+    }
+  }
+}

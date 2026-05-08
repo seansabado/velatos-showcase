@@ -1,0 +1,101 @@
+// src/i18n/en.json
+// Fake English translations — non-proprietary, for demonstration only
+{
+  "pos": {
+    "shift": {
+      "open_button": "Open Shift",
+      "close_button": "Close Shift",
+      "suspended_label": "Suspended",
+      "confirm_close": "Are you sure you want to close this shift?",
+      "open_success": "Shift opened",
+      "close_success": "Shift closed"
+    },
+    "order": {
+      "new_button": "New Order",
+      "confirm_button": "Confirm",
+      "cancel_button": "Cancel",
+      "void_button": "Void / Return",
+      "void_reason": {
+        "label": "Void Reason",
+        "placeholder": "Enter reason"
+      },
+      "payment": {
+        "cash": "Cash",
+        "card": "Card",
+        "other": "Other",
+        "total_label": "Total",
+        "tax_label": "Tax (10%)",
+        "subtotal_label": "Subtotal"
+      },
+      "status": {
+        "building": "Building",
+        "confirming": "Confirming",
+        "confirmed": "Confirmed",
+        "voided": "Voided"
+      }
+    },
+    "register": {
+      "label": "Register",
+      "select_placeholder": "Select a register"
+    }
+  },
+  "manager": {
+    "dashboard": {
+      "title": "Dashboard",
+      "transactions_today": "Transactions Today",
+      "gross_revenue": "Gross Revenue",
+      "void_count": "Voids",
+      "open_exceptions": "Open Exceptions"
+    },
+    "exception": {
+      "approve_button": "Approve",
+      "reject_button": "Reject",
+      "pending_label": "Pending",
+      "approved_label": "Approved",
+      "rejected_label": "Rejected"
+    },
+    "daily_close": {
+      "button": "Daily Close",
+      "confirm": "Are you sure you want to close today's operations?",
+      "success": "Daily close completed"
+    }
+  },
+  "staff": {
+    "punch": {
+      "in_button": "Punch In",
+      "out_button": "Punch Out",
+      "success_in": "Punched in successfully",
+      "success_out": "Punched out successfully",
+      "geofence_warning": "You are outside the work area. Please provide a reason."
+    },
+    "schedule": {
+      "title": "Schedule",
+      "no_schedule": "No schedule for today"
+    },
+    "payroll": {
+      "title": "Payroll",
+      "this_month": "This Month's Pay"
+    }
+  },
+  "common": {
+    "error": {
+      "network": "A network error occurred",
+      "unauthorized": "You do not have permission to access this",
+      "not_found": "Record not found",
+      "unexpected": "An unexpected error occurred"
+    },
+    "status": {
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "offline": "Offline",
+      "syncing": "Syncing..."
+    },
+    "action": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "back": "Back",
+      "close": "Close"
+    }
+  }
+}
