@@ -5,49 +5,187 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VelatOS Showcase</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
     :root {
-      --bg: #f3f4ef;
-      --ink: #1e2a2a;
-      --muted: #5f6b6b;
-      --accent: #0d6c63;
+      --bg: #f1f6f4;
+      --ink: #102826;
+      --muted: #49605d;
+      --accent: #0c756a;
+      --accent-2: #1ea893;
       --card: #ffffff;
       --warn: #b85d00;
-      --ok: #1c7f43;
+      --danger: #9e2030;
+      --ok: #187447;
+      --line: #d7e3df;
+      --shadow: 0 12px 32px rgba(12, 34, 31, 0.08);
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Space Grotesk", "Noto Sans JP", "Segoe UI", sans-serif;
       color: var(--ink);
-      background: radial-gradient(circle at top right, #d8edea 0%, var(--bg) 55%);
+      background:
+        radial-gradient(circle at 8% 10%, #d0ece6 0%, transparent 38%),
+        radial-gradient(circle at 90% 15%, #b8e7de 0%, transparent 36%),
+        linear-gradient(180deg, #eaf3f0 0%, var(--bg) 58%);
     }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 40px; }
-    h1 { margin: 0 0 6px; font-size: 2rem; }
-    .sub { color: var(--muted); margin-bottom: 22px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+
+    .hero {
+      position: relative;
+      border: 1px solid #c7ded8;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(115deg, rgba(255,255,255,0.92) 0%, rgba(247,252,250,0.95) 100%);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -50px;
+      width: 210px;
+      height: 210px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 40% 40%, rgba(30,168,147,0.38), rgba(30,168,147,0));
+      pointer-events: none;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #dbf5ef;
+      color: #0a5f56;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border: 1px solid #b9e8dd;
+    }
+
+    h1 {
+      margin: 12px 0 6px;
+      font-size: clamp(1.6rem, 2.3vw, 2.2rem);
+      line-height: 1.2;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 0;
+      max-width: 720px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
     .card {
       background: var(--card);
-      border: 1px solid #d7dcd8;
-      border-radius: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
       padding: 14px;
-      box-shadow: 0 4px 16px rgba(30, 42, 42, 0.06);
+      box-shadow: var(--shadow);
     }
-    .label { font-size: 12px; color: var(--muted); }
-    .value { font-size: 1.25rem; font-weight: 700; margin-top: 4px; }
-    .section { margin-top: 20px; }
+
+    .label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .section { margin-top: 16px; }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     button {
-      border: 0;
+      border: 1px solid transparent;
       border-radius: 8px;
       padding: 8px 12px;
       color: #fff;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+      box-shadow: 0 6px 16px rgba(12, 117, 106, 0.22);
     }
-    button[disabled] { background: #8ca7a4; cursor: not-allowed; }
-    .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; }
+
+    button:hover:not([disabled]) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(12, 117, 106, 0.28);
+    }
+
+    button[disabled] {
+      background: #8ca7a4;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mode-btn {
+      background: #f7fbfa;
+      color: #11433f;
+      border-color: #cfe3de;
+      box-shadow: none;
+      font-weight: 600;
+    }
+
+    .mode-btn:hover:not([disabled]) {
+      background: #ebf6f3;
+      box-shadow: none;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(12, 117, 106, 0.22);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .pill.ok { background: #d5f2df; color: var(--ok); }
     .pill.warn { background: #fde7d1; color: var(--warn); }
+
     .timeline { list-style: none; padding: 0; margin: 0; }
+
     .timeline li {
       padding: 8px 10px;
       border-left: 3px solid #d9e4e2;
@@ -56,24 +194,58 @@
       border-radius: 6px;
       font-size: 13px;
     }
+
+    .timeline li.queued { border-left-color: #a36a15; }
+    .timeline li.retrying { border-left-color: #0f6fa6; }
+    .timeline li.deduped { border-left-color: #6b3bb1; }
+    .timeline li.resolved { border-left-color: #1e834f; }
+    .timeline li.denied { border-left-color: #9e2030; }
+    .timeline li.blocked { border-left-color: #9e2030; }
+    .timeline li.guarded { border-left-color: #9e2030; }
+    .timeline li.normal { border-left-color: #2c7a73; }
+
     .timeline li strong { color: #1a5752; }
-    footer { margin-top: 22px; color: var(--muted); font-size: 12px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 0;
+    }
+
+    footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px dashed #c9ddda;
+      padding-top: 14px;
+    }
+
     code { background: #eef1ef; padding: 1px 5px; border-radius: 4px; }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 16px 12px 30px; }
+      .hero { padding: 18px; }
+      .value { font-size: 1.15rem; }
+      .card { padding: 12px; }
+    }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <h1>VelatOS Architecture Showcase</h1>
-    <div class="sub">Interactive static demo for GitHub Pages: permissions, offline queue, and reconciliation gates.</div>
+    <section class="hero">
+      <span class="brand-pill">VelatOS Brand Showcase</span>
+      <h1>VelatOS Architecture Showcase</h1>
+      <div class="sub">Interactive portfolio demo aligned to VelatOS visual identity and operational themes: permissions, offline queue handling, replay safety, and reconciliation controls.</div>
+    </section>
 
     <section class="section card" style="margin-top:0;">
       <h3 style="margin-top:0;">Scenario Modes</h3>
-      <p style="margin-top:0;color:var(--muted)">Switch the demo into common operational states to tell a stronger system story.</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button id="modeNormal">Normal</button>
-        <button id="modeOutage">Network Outage</button>
-        <button id="modeReplayStorm">Replay Storm</button>
-        <button id="modePrivilegeDenied">Privilege Denied</button>
+      <p class="muted">Switch the demo into common operational states to tell a stronger system story.</p>
+      <div class="action-row">
+        <button class="mode-btn" id="modeNormal">Normal</button>
+        <button class="mode-btn" id="modeOutage">Network Outage</button>
+        <button class="mode-btn" id="modeReplayStorm">Replay Storm</button>
+        <button class="mode-btn" id="modePrivilegeDenied">Privilege Denied</button>
       </div>
     </section>
 
@@ -81,7 +253,7 @@
       <article class="card">
         <div class="label">Active Role</div>
         <div class="value" id="roleValue">branch_manager</div>
-        <div class="section">
+        <div class="section action-row">
           <button id="toggleRole">Switch to cashier</button>
         </div>
       </article>
@@ -89,7 +261,7 @@
       <article class="card">
         <div class="label">Offline Queue</div>
         <div class="value" id="queueCount">0</div>
-        <div class="section" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="section action-row">
           <button id="addQueue">Add mutation</button>
           <button id="flushQueue">Flush queue</button>
         </div>
@@ -104,14 +276,14 @@
 
     <section class="section card">
       <h3 style="margin-top:0;">Permission Gate Example</h3>
-      <p style="margin-top:0;color:var(--muted)">Action <code>manager.daily_close</code> requires <code>branch_manager</code> or above.</p>
+      <p class="muted">Action <code>manager.daily_close</code> requires <code>branch_manager</code> or above.</p>
       <button id="closeDayBtn">Close Day</button>
       <p id="gateMsg" style="margin-bottom:0;"></p>
     </section>
 
     <section class="section card">
       <h3 style="margin-top:0;">Runbook Summary</h3>
-      <p style="margin-top:0;color:var(--muted)">Operational triage for replay and dead-letter incidents.</p>
+      <p class="muted">Operational triage for replay and dead-letter incidents.</p>
       <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
         <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
           <div class="label">Triage Trigger</div>
@@ -133,8 +305,8 @@
 
     <section class="section card">
       <h3 style="margin-top:0;">Event Timeline</h3>
-      <p style="margin-top:0;color:var(--muted)">Visual sequence mirroring queue -> retry -> dedupe -> resolved behavior.</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+      <p class="muted">Visual sequence mirroring queue -> retry -> dedupe -> resolved behavior.</p>
+      <div class="action-row" style="margin-bottom:10px;">
         <button id="simulateTimeline">Simulate Replay Flow</button>
         <button id="clearTimeline">Clear Timeline</button>
       </div>
@@ -145,7 +317,7 @@
 
     <section class="section card">
       <h3 style="margin-top:0;">Watch Demo Video</h3>
-      <p style="margin-top:0;color:var(--muted)">Quick 90-second walkthrough of the architecture and reliability story.</p>
+      <p class="muted">Quick 90-second walkthrough of the architecture and reliability story.</p>
       <p style="margin:0; font-size:14px;">
         <a href="https://youtu.be/IGDm8o8d19k" target="_blank" rel="noopener noreferrer">Open YouTube Demo</a>
       </p>
@@ -174,9 +346,23 @@
     const closeDayBtn = document.getElementById('closeDayBtn');
     const toggleRoleBtn = document.getElementById('toggleRole');
     const timelineEl = document.getElementById('timeline');
+    const modeButtons = {
+      normal: document.getElementById('modeNormal'),
+      outage: document.getElementById('modeOutage'),
+      replayStorm: document.getElementById('modeReplayStorm'),
+      privilegeDenied: document.getElementById('modePrivilegeDenied'),
+    };
+
+    function setActiveMode(modeKey) {
+      Object.entries(modeButtons).forEach(([key, btn]) => {
+        if (!btn) return;
+        btn.classList.toggle('active', key === modeKey);
+      });
+    }
 
     function appendTimeline(status, detail) {
       const li = document.createElement('li');
+      li.className = status;
       li.innerHTML = `<strong>${status}</strong> - ${detail}`;
       timelineEl.appendChild(li);
     }
@@ -218,6 +404,7 @@
     });
 
     document.getElementById('modeNormal').addEventListener('click', () => {
+      setActiveMode('normal');
       state.role = 'branch_manager';
       state.queue = 0;
       state.variance = -500;
@@ -228,6 +415,7 @@
     });
 
     document.getElementById('modeOutage').addEventListener('click', () => {
+      setActiveMode('outage');
       state.role = 'branch_manager';
       state.queue = 3;
       state.variance = -500;
@@ -239,6 +427,7 @@
     });
 
     document.getElementById('modeReplayStorm').addEventListener('click', () => {
+      setActiveMode('replayStorm');
       state.role = 'branch_manager';
       state.queue = 2;
       state.variance = -500;
@@ -251,6 +440,7 @@
     });
 
     document.getElementById('modePrivilegeDenied').addEventListener('click', () => {
+      setActiveMode('privilegeDenied');
       state.role = 'cashier';
       state.queue = 0;
       state.variance = -500;
@@ -295,6 +485,7 @@
       updateUi();
     });
 
+    setActiveMode('normal');
     clearTimeline();
     updateUi();
   </script>
