@@ -98,6 +98,7 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 - Security posture doc: [docs/security-posture.md](docs/security-posture.md)
 - Incident walkthrough: [docs/incident-walkthrough.md](docs/incident-walkthrough.md)
+- Operations runbook: [docs/operations-runbook.md](docs/operations-runbook.md)
 - One-page recruiter brief: [docs/case-study.md](docs/case-study.md)
 
 ---
@@ -150,6 +151,7 @@ docs/                   Architecture and design decision records
   case-study.md         One-page recruiter-focused architecture brief
   security-posture.md   Threat assumptions, controls, and residual risks
   incident-walkthrough.md  Realistic outage analysis and mitigation narrative
+  operations-runbook.md Operational playbook for replay/dead-letter triage
   assets/               Visual assets for README and docs
     architecture-banner.svg
     ui-preview.svg
