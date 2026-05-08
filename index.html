@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VelatOS Showcase</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    :root {
+      --bg: #f1f6f4;
+      --ink: #102826;
+      --muted: #49605d;
+      --accent: #0c756a;
+      --accent-2: #1ea893;
+      --card: #ffffff;
+      --warn: #b85d00;
+      --danger: #9e2030;
+      --ok: #187447;
+      --line: #d7e3df;
+      --shadow: 0 12px 32px rgba(12, 34, 31, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Noto Sans JP", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 10%, #d0ece6 0%, transparent 38%),
+        radial-gradient(circle at 90% 15%, #b8e7de 0%, transparent 36%),
+        linear-gradient(180deg, #eaf3f0 0%, var(--bg) 58%);
+    }
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+
+    .hero {
+      position: relative;
+      border: 1px solid #c7ded8;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      background:
+        linear-gradient(115deg, rgba(255,255,255,0.92) 0%, rgba(247,252,250,0.95) 100%);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -50px;
+      width: 210px;
+      height: 210px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 40% 40%, rgba(30,168,147,0.38), rgba(30,168,147,0));
+      pointer-events: none;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #dbf5ef;
+      color: #0a5f56;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      border: 1px solid #b9e8dd;
+    }
+
+    h1 {
+      margin: 12px 0 6px;
+      font-size: clamp(1.6rem, 2.3vw, 2.2rem);
+      line-height: 1.2;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 0;
+      max-width: 720px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .section { margin-top: 16px; }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+      box-shadow: 0 6px 16px rgba(12, 117, 106, 0.22);
+    }
+
+    button:hover:not([disabled]) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(12, 117, 106, 0.28);
+    }
+
+    button[disabled] {
+      background: #8ca7a4;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mode-btn {
+      background: #f7fbfa;
+      color: #11433f;
+      border-color: #cfe3de;
+      box-shadow: none;
+      font-weight: 600;
+    }
+
+    .mode-btn:hover:not([disabled]) {
+      background: #ebf6f3;
+      box-shadow: none;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(12, 117, 106, 0.22);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pill.ok { background: #d5f2df; color: var(--ok); }
+    .pill.warn { background: #fde7d1; color: var(--warn); }
+
+    .timeline { list-style: none; padding: 0; margin: 0; }
+
+    .timeline li {
+      padding: 8px 10px;
+      border-left: 3px solid #d9e4e2;
+      margin: 8px 0;
+      background: #f8fbfa;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .timeline li.queued { border-left-color: #a36a15; }
+    .timeline li.retrying { border-left-color: #0f6fa6; }
+    .timeline li.deduped { border-left-color: #6b3bb1; }
+    .timeline li.resolved { border-left-color: #1e834f; }
+    .timeline li.denied { border-left-color: #9e2030; }
+    .timeline li.blocked { border-left-color: #9e2030; }
+    .timeline li.guarded { border-left-color: #9e2030; }
+    .timeline li.normal { border-left-color: #2c7a73; }
+
+    .timeline li strong { color: #1a5752; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 0;
+    }
+
+    footer {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px dashed #c9ddda;
+      padding-top: 14px;
+    }
+
+    code { background: #eef1ef; padding: 1px 5px; border-radius: 4px; }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 16px 12px 30px; }
+      .hero { padding: 18px; }
+      .value { font-size: 1.15rem; }
+      .card { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="brand-pill">VelatOS Brand Showcase</span>
+      <h1>VelatOS Architecture Showcase</h1>
+      <div class="sub">Interactive portfolio demo aligned to VelatOS visual identity and operational themes: permissions, offline queue handling, replay safety, and reconciliation controls.</div>
+    </section>
+
+    <section class="section card" style="margin-top:0;">
+      <h3 style="margin-top:0;">Scenario Modes</h3>
+      <p class="muted">Switch the demo into common operational states to tell a stronger system story.</p>
+      <div class="action-row">
+        <button class="mode-btn" id="modeNormal">Normal</button>
+        <button class="mode-btn" id="modeOutage">Network Outage</button>
+        <button class="mode-btn" id="modeReplayStorm">Replay Storm</button>
+        <button class="mode-btn" id="modePrivilegeDenied">Privilege Denied</button>
+      </div>
+    </section>
+
+    <div class="grid">
+      <article class="card">
+        <div class="label">Active Role</div>
+        <div class="value" id="roleValue">branch_manager</div>
+        <div class="section action-row">
+          <button id="toggleRole">Switch to cashier</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="label">Offline Queue</div>
+        <div class="value" id="queueCount">0</div>
+        <div class="section action-row">
+          <button id="addQueue">Add mutation</button>
+          <button id="flushQueue">Flush queue</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="label">Reconciliation Status</div>
+        <div class="value" id="varianceValue">-500 JPY</div>
+        <div class="section"><span class="pill warn" id="reconStatus">review_required</span></div>
+      </article>
+    </div>
+
+    <section class="section card">
+      <h3 style="margin-top:0;">Permission Gate Example</h3>
+      <p class="muted">Action <code>manager.daily_close</code> requires <code>branch_manager</code> or above.</p>
+      <button id="closeDayBtn">Close Day</button>
+      <p id="gateMsg" style="margin-bottom:0;"></p>
+    </section>
+
+    <section class="section card">
+      <h3 style="margin-top:0;">Runbook Summary</h3>
+      <p class="muted">Operational triage for replay and dead-letter incidents.</p>
+      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Triage Trigger</div>
+          <div style="font-size:13px;margin-top:6px;"><code>syncStatus=error</code> for 5+ min</div>
+        </div>
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Escalation Signal</div>
+          <div style="font-size:13px;margin-top:6px;">Dead-letter growth after 2 requeue attempts</div>
+        </div>
+        <div style="background:#f8fbfa;border:1px solid #e0e8e5;border-radius:8px;padding:10px;">
+          <div class="label">Recovery Goal</div>
+          <div style="font-size:13px;margin-top:6px;">Queue drains to zero and status returns to idle</div>
+        </div>
+      </div>
+      <p style="margin:10px 0 0; font-size:13px;">
+        Full guide: <a href="https://seansabado.github.io/velatos-showcase/docs/operations-runbook.html" target="_blank" rel="noopener noreferrer">Operations Runbook</a>
+      </p>
+    </section>
+
+    <section class="section card">
+      <h3 style="margin-top:0;">Event Timeline</h3>
+      <p class="muted">Visual sequence mirroring queue -> retry -> dedupe -> resolved behavior.</p>
+      <div class="action-row" style="margin-bottom:10px;">
+        <button id="simulateTimeline">Simulate Replay Flow</button>
+        <button id="clearTimeline">Clear Timeline</button>
+      </div>
+      <ul id="timeline" class="timeline">
+        <li><strong>idle</strong> - waiting for events</li>
+      </ul>
+    </section>
+
+    <section class="section card">
+      <h3 style="margin-top:0;">Watch Demo Video</h3>
+      <p class="muted">Quick 90-second walkthrough of the architecture and reliability story.</p>
+      <p style="margin:0; font-size:14px;">
+        <a href="https://youtu.be/IGDm8o8d19k" target="_blank" rel="noopener noreferrer">Open YouTube Demo</a>
+      </p>
+    </section>
+
+    <footer>
+      This page is a static educational demo. No backend calls, no production logic, no real data.
+    </footer>
+
+    <!-- Root fallback for branch-source Pages mode -->
+  </main>
+
+  <script>
+    const state = {
+      role: 'branch_manager',
+      queue: 0,
+      variance: -500,
+      online: true,
+    };
+
+    const roleValue = document.getElementById('roleValue');
+    const queueCount = document.getElementById('queueCount');
+    const varianceValue = document.getElementById('varianceValue');
+    const reconStatus = document.getElementById('reconStatus');
+    const gateMsg = document.getElementById('gateMsg');
+    const closeDayBtn = document.getElementById('closeDayBtn');
+    const toggleRoleBtn = document.getElementById('toggleRole');
+    const timelineEl = document.getElementById('timeline');
+    const modeButtons = {
+      normal: document.getElementById('modeNormal'),
+      outage: document.getElementById('modeOutage'),
+      replayStorm: document.getElementById('modeReplayStorm'),
+      privilegeDenied: document.getElementById('modePrivilegeDenied'),
+    };
+
+    function setActiveMode(modeKey) {
+      Object.entries(modeButtons).forEach(([key, btn]) => {
+        if (!btn) return;
+        btn.classList.toggle('active', key === modeKey);
+      });
+    }
+
+    function appendTimeline(status, detail) {
+      const li = document.createElement('li');
+      li.className = status;
+      li.innerHTML = `<strong>${status}</strong> - ${detail}`;
+      timelineEl.appendChild(li);
+    }
+
+    function clearTimeline() {
+      timelineEl.innerHTML = '';
+      appendTimeline('idle', 'waiting for events');
+    }
+
+    function roleAtLeast(actual, minimum) {
+      const level = { cashier: 0, senior_cashier: 1, branch_manager: 2, area_manager: 3, super_admin: 4 };
+      return (level[actual] ?? -1) >= (level[minimum] ?? 999);
+    }
+
+    function canCloseDay() {
+      return state.online && roleAtLeast(state.role, 'branch_manager') && state.queue === 0;
+    }
+
+    function updateUi() {
+      roleValue.textContent = state.role;
+      queueCount.textContent = String(state.queue);
+      varianceValue.textContent = `${state.variance} JPY`;
+
+      const status = Math.abs(state.variance) === 0 ? 'ready' : 'review_required';
+      reconStatus.textContent = status;
+      reconStatus.className = `pill ${status === 'ready' ? 'ok' : 'warn'}`;
+
+      closeDayBtn.disabled = !canCloseDay();
+      gateMsg.textContent = canCloseDay()
+        ? 'Gate open: role and queue checks passed.'
+        : `Gate blocked: need online=${state.online}, branch_manager+ role, and empty queue.`;
+
+      toggleRoleBtn.textContent = state.role === 'branch_manager' ? 'Switch to cashier' : 'Switch to branch_manager';
+    }
+
+    document.getElementById('toggleRole').addEventListener('click', () => {
+      state.role = state.role === 'branch_manager' ? 'cashier' : 'branch_manager';
+      updateUi();
+    });
+
+    document.getElementById('modeNormal').addEventListener('click', () => {
+      setActiveMode('normal');
+      state.role = 'branch_manager';
+      state.queue = 0;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('normal', 'Healthy operating state loaded');
+      updateUi();
+    });
+
+    document.getElementById('modeOutage').addEventListener('click', () => {
+      setActiveMode('outage');
+      state.role = 'branch_manager';
+      state.queue = 3;
+      state.variance = -500;
+      state.online = false;
+      clearTimeline();
+      appendTimeline('queued', 'Network outage forced mutations into local queue');
+      appendTimeline('blocked', 'Shift close blocked until connectivity returns');
+      updateUi();
+    });
+
+    document.getElementById('modeReplayStorm').addEventListener('click', () => {
+      setActiveMode('replayStorm');
+      state.role = 'branch_manager';
+      state.queue = 2;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('retrying', 'Replay storm started after reconnect');
+      appendTimeline('deduped', 'Duplicate replay suppressed by idempotency key');
+      appendTimeline('resolved', 'Queue stabilized and audit timeline preserved');
+      updateUi();
+    });
+
+    document.getElementById('modePrivilegeDenied').addEventListener('click', () => {
+      setActiveMode('privilegeDenied');
+      state.role = 'cashier';
+      state.queue = 0;
+      state.variance = -500;
+      state.online = true;
+      clearTimeline();
+      appendTimeline('denied', 'Cashier attempted manager-only close action');
+      appendTimeline('guarded', 'Permission gate blocked operation');
+      updateUi();
+    });
+
+    document.getElementById('addQueue').addEventListener('click', () => {
+      state.queue += 1;
+      appendTimeline('queued', 'Mutation added to offline queue');
+      updateUi();
+    });
+
+    document.getElementById('flushQueue').addEventListener('click', () => {
+      if (state.queue > 0) {
+        appendTimeline('retrying', `Attempting sync for ${state.queue} queued mutation(s)`);
+        appendTimeline('resolved', 'Queue drained and sync status returned to idle');
+      }
+      state.queue = 0;
+      updateUi();
+    });
+
+    document.getElementById('simulateTimeline').addEventListener('click', () => {
+      clearTimeline();
+      appendTimeline('queued', 'CREATE_ORDER:order-001 queued while offline');
+      appendTimeline('retrying', 'Replay started after reconnect');
+      appendTimeline('deduped', 'Duplicate replay ignored by idempotency key');
+      appendTimeline('resolved', 'Queue=0, dead-letter stable, shift-close unblocked');
+    });
+
+    document.getElementById('clearTimeline').addEventListener('click', () => {
+      clearTimeline();
+    });
+
+    closeDayBtn.addEventListener('click', () => {
+      if (!canCloseDay()) return;
+      state.variance = 0;
+      gateMsg.textContent = 'Day closed successfully (demo).';
+      updateUi();
+    });
+
+    setActiveMode('normal');
+    clearTimeline();
+    updateUi();
+  </script>
+</body>
+</html>
