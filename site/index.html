@@ -47,6 +47,16 @@
     .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; }
     .pill.ok { background: #d5f2df; color: var(--ok); }
     .pill.warn { background: #fde7d1; color: var(--warn); }
+    .timeline { list-style: none; padding: 0; margin: 0; }
+    .timeline li {
+      padding: 8px 10px;
+      border-left: 3px solid #d9e4e2;
+      margin: 8px 0;
+      background: #f8fbfa;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .timeline li strong { color: #1a5752; }
     footer { margin-top: 22px; color: var(--muted); font-size: 12px; }
     code { background: #eef1ef; padding: 1px 5px; border-radius: 4px; }
   </style>
@@ -110,6 +120,18 @@
       </p>
     </section>
 
+    <section class="section card">
+      <h3 style="margin-top:0;">Event Timeline</h3>
+      <p style="margin-top:0;color:var(--muted)">Visual sequence mirroring queue -> retry -> dedupe -> resolved behavior.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <button id="simulateTimeline">Simulate Replay Flow</button>
+        <button id="clearTimeline">Clear Timeline</button>
+      </div>
+      <ul id="timeline" class="timeline">
+        <li><strong>idle</strong> - waiting for events</li>
+      </ul>
+    </section>
+
     <footer>
       This page is a static educational demo. No backend calls, no production logic, no real data.
     </footer>
@@ -131,6 +153,18 @@
     const gateMsg = document.getElementById('gateMsg');
     const closeDayBtn = document.getElementById('closeDayBtn');
     const toggleRoleBtn = document.getElementById('toggleRole');
+    const timelineEl = document.getElementById('timeline');
+
+    function appendTimeline(status, detail) {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${status}</strong> - ${detail}`;
+      timelineEl.appendChild(li);
+    }
+
+    function clearTimeline() {
+      timelineEl.innerHTML = '';
+      appendTimeline('idle', 'waiting for events');
+    }
 
     function roleAtLeast(actual, minimum) {
       const level = { cashier: 0, senior_cashier: 1, branch_manager: 2, area_manager: 3, super_admin: 4 };
@@ -165,12 +199,29 @@
 
     document.getElementById('addQueue').addEventListener('click', () => {
       state.queue += 1;
+      appendTimeline('queued', 'Mutation added to offline queue');
       updateUi();
     });
 
     document.getElementById('flushQueue').addEventListener('click', () => {
+      if (state.queue > 0) {
+        appendTimeline('retrying', `Attempting sync for ${state.queue} queued mutation(s)`);
+        appendTimeline('resolved', 'Queue drained and sync status returned to idle');
+      }
       state.queue = 0;
       updateUi();
+    });
+
+    document.getElementById('simulateTimeline').addEventListener('click', () => {
+      clearTimeline();
+      appendTimeline('queued', 'CREATE_ORDER:order-001 queued while offline');
+      appendTimeline('retrying', 'Replay started after reconnect');
+      appendTimeline('deduped', 'Duplicate replay ignored by idempotency key');
+      appendTimeline('resolved', 'Queue=0, dead-letter stable, shift-close unblocked');
+    });
+
+    document.getElementById('clearTimeline').addEventListener('click', () => {
+      clearTimeline();
     });
 
     closeDayBtn.addEventListener('click', () => {
@@ -180,6 +231,7 @@
       updateUi();
     });
 
+    clearTimeline();
     updateUi();
   </script>
 </body>
