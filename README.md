@@ -91,12 +91,13 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 | Signal | Current Value |
 |---|---|
 | Example modules (`src/example-*`) | 6 |
-| Test suites (`*.test.ts`) | 8 |
+| Test suites (`*.test.ts`) | 9 |
 | Coverage (statements / branches / functions / lines) | 96.39% / 81.15% / 100% / 97.16% |
 | Architecture Decision Records | 3 |
 | Sequence diagrams | 3 |
 
 - Security posture doc: [docs/security-posture.md](docs/security-posture.md)
+- Incident walkthrough: [docs/incident-walkthrough.md](docs/incident-walkthrough.md)
 - One-page recruiter brief: [docs/case-study.md](docs/case-study.md)
 
 ---
@@ -148,6 +149,7 @@ All data, IDs, and logic in this repo are **fabricated for demonstration purpose
 docs/                   Architecture and design decision records
   case-study.md         One-page recruiter-focused architecture brief
   security-posture.md   Threat assumptions, controls, and residual risks
+  incident-walkthrough.md  Realistic outage analysis and mitigation narrative
   assets/               Visual assets for README and docs
     architecture-banner.svg
     ui-preview.svg
@@ -169,6 +171,7 @@ docs/                   Architecture and design decision records
 
 src/
   example-pos/          Fake POS surface: machine state, shift, orders
+    replayScenario.ts   End-to-end offline replay scenario timeline runner
   example-manager/      Fake manager dashboard: branch metrics, approvals
   example-staff/        Fake staff panel: punch-in/out, schedule view
   example-rma/          Fake RMA module: 9-state FSM, line inspection
