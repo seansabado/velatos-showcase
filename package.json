@@ -6,6 +6,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "jest --passWithNoTests",
+    "test:ci": "jest --coverage",
     "test:watch": "jest --watch"
   },
   "devDependencies": {
@@ -22,7 +23,15 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/__tests__/**/*.test.ts"]
+    "testMatch": ["**/__tests__/**/*.test.ts"],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 75,
+        "lines": 75,
+        "statements": 75
+      }
+    }
   },
   "repository": {
     "type": "git",

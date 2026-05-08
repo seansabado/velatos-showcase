@@ -37,7 +37,7 @@ export function useOnlineStatus(): OnlineStatus {
       // In production: fetch('/health', { signal: AbortSignal.timeout(PING_TIMEOUT_MS) })
       // Simulated for demo:
       await new Promise<void>((resolve, reject) => {
-        const t = setTimeout(resolve, 100);
+        const t = setTimeout(resolve, Math.min(100, PING_TIMEOUT_MS));
         if (!navigator.onLine) {
           clearTimeout(t);
           reject(new Error('offline'));

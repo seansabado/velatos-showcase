@@ -3,10 +3,14 @@
 
 import { requireAuth, makeFakeContext } from './auth';
 import { verifyTenantAccess } from './tenantGuard';
-import { logAudit, logAuditFailure } from './auditLogger';
+import { logAudit } from './auditLogger';
 import { generateId, generateRef } from '../shared/utils/id';
 import type { CallableContext } from '../shared/types/tenant';
 import type { Order } from '../shared/types/pos';
+import {
+  validateCreateOrderPayload,
+  validateApproveExceptionPayload,
+} from './validation';
 
 // ---------------------------------------------------------------------------
 // Example 1: Create Order
@@ -34,11 +38,12 @@ export async function exampleCreateOrder(
   // 1. Auth
   const claims = requireAuth(context);
 
-  // 2. Validate (abbreviated — use Zod in production)
-  const payload = data as CreateOrderPayload;
-  if (!payload?.tenantId || !payload?.shiftId || !Array.isArray(payload?.lines) || payload.lines.length === 0) {
-    throw { code: 'invalid-argument', message: 'Missing required fields: tenantId, shiftId, lines' };
+  // 2. Validate payload at runtime before casting
+  const parseResult = validateCreateOrderPayload(data);
+  if (!parseResult.ok) {
+    throw parseResult.error;
   }
+  const payload: CreateOrderPayload = parseResult.value;
 
   // 3. Tenant guard — cashier minimum
   verifyTenantAccess(claims, payload.tenantId, 'cashier');
@@ -104,11 +109,11 @@ export async function exampleApproveException(
   context: CallableContext
 ): Promise<{ approved: boolean }> {
   const claims = requireAuth(context);
-  const payload = data as ApproveExceptionPayload;
-
-  if (!payload?.tenantId || !payload?.exceptionId) {
-    throw { code: 'invalid-argument', message: 'Missing tenantId or exceptionId' };
+  const parseResult = validateApproveExceptionPayload(data);
+  if (!parseResult.ok) {
+    throw parseResult.error;
   }
+  const payload: ApproveExceptionPayload = parseResult.value;
 
   // Requires branch_manager or above
   verifyTenantAccess(claims, payload.tenantId, 'branch_manager');
@@ -125,7 +130,7 @@ export async function exampleApproveException(
 // Demo runner (not for production — illustrates the pattern only)
 // ---------------------------------------------------------------------------
 
-async function runDemo(): Promise<void> {
+export async function runDemo(): Promise<void> {
   console.log('--- Example Function Pipeline Demo ---\n');
 
   const context = makeFakeContext({

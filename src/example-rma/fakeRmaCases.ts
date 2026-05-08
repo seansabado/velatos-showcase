@@ -2,7 +2,7 @@
 // Fake RMA case data — non-proprietary demo data only
 
 import type { RmaCase } from './rmaTypes';
-import { generateId, generateRef } from '../shared/utils/id';
+import { generateId } from '../shared/utils/id';
 
 export const FAKE_RMA_DRAFT: RmaCase = {
   id: generateId(),

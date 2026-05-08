@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VelatOS Showcase</title>
+  <style>
+    :root {
+      --bg: #f3f4ef;
+      --ink: #1e2a2a;
+      --muted: #5f6b6b;
+      --accent: #0d6c63;
+      --card: #ffffff;
+      --warn: #b85d00;
+      --ok: #1c7f43;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top right, #d8edea 0%, var(--bg) 55%);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 40px; }
+    h1 { margin: 0 0 6px; font-size: 2rem; }
+    .sub { color: var(--muted); margin-bottom: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid #d7dcd8;
+      border-radius: 10px;
+      padding: 14px;
+      box-shadow: 0 4px 16px rgba(30, 42, 42, 0.06);
+    }
+    .label { font-size: 12px; color: var(--muted); }
+    .value { font-size: 1.25rem; font-weight: 700; margin-top: 4px; }
+    .section { margin-top: 20px; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      background: var(--accent);
+      cursor: pointer;
+    }
+    button[disabled] { background: #8ca7a4; cursor: not-allowed; }
+    .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 12px; }
+    .pill.ok { background: #d5f2df; color: var(--ok); }
+    .pill.warn { background: #fde7d1; color: var(--warn); }
+    footer { margin-top: 22px; color: var(--muted); font-size: 12px; }
+    code { background: #eef1ef; padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>VelatOS Architecture Showcase</h1>
+    <div class="sub">Interactive static demo for GitHub Pages: permissions, offline queue, and reconciliation gates.</div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="label">Active Role</div>
+        <div class="value" id="roleValue">branch_manager</div>
+        <div class="section">
+          <button id="toggleRole">Switch to cashier</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="label">Offline Queue</div>
+        <div class="value" id="queueCount">0</div>
+        <div class="section" style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button id="addQueue">Add mutation</button>
+          <button id="flushQueue">Flush queue</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="label">Reconciliation Status</div>
+        <div class="value" id="varianceValue">-500 JPY</div>
+        <div class="section"><span class="pill warn" id="reconStatus">review_required</span></div>
+      </article>
+    </div>
+
+    <section class="section card">
+      <h3 style="margin-top:0;">Permission Gate Example</h3>
+      <p style="margin-top:0;color:var(--muted)">Action <code>manager.daily_close</code> requires <code>branch_manager</code> or above.</p>
+      <button id="closeDayBtn">Close Day</button>
+      <p id="gateMsg" style="margin-bottom:0;"></p>
+    </section>
+
+    <footer>
+      This page is a static educational demo. No backend calls, no production logic, no real data.
+    </footer>
+  </main>
+
+  <script>
+    const state = {
+      role: 'branch_manager',
+      queue: 0,
+      variance: -500,
+    };
+
+    const roleValue = document.getElementById('roleValue');
+    const queueCount = document.getElementById('queueCount');
+    const varianceValue = document.getElementById('varianceValue');
+    const reconStatus = document.getElementById('reconStatus');
+    const gateMsg = document.getElementById('gateMsg');
+    const closeDayBtn = document.getElementById('closeDayBtn');
+    const toggleRoleBtn = document.getElementById('toggleRole');
+
+    function roleAtLeast(actual, minimum) {
+      const level = { cashier: 0, senior_cashier: 1, branch_manager: 2, area_manager: 3, super_admin: 4 };
+      return (level[actual] ?? -1) >= (level[minimum] ?? 999);
+    }
+
+    function canCloseDay() {
+      return roleAtLeast(state.role, 'branch_manager') && state.queue === 0;
+    }
+
+    function updateUi() {
+      roleValue.textContent = state.role;
+      queueCount.textContent = String(state.queue);
+      varianceValue.textContent = `${state.variance} JPY`;
+
+      const status = Math.abs(state.variance) === 0 ? 'ready' : 'review_required';
+      reconStatus.textContent = status;
+      reconStatus.className = `pill ${status === 'ready' ? 'ok' : 'warn'}`;
+
+      closeDayBtn.disabled = !canCloseDay();
+      gateMsg.textContent = canCloseDay()
+        ? 'Gate open: role and queue checks passed.'
+        : 'Gate blocked: need branch_manager+ role and empty queue.';
+
+      toggleRoleBtn.textContent = state.role === 'branch_manager' ? 'Switch to cashier' : 'Switch to branch_manager';
+    }
+
+    document.getElementById('toggleRole').addEventListener('click', () => {
+      state.role = state.role === 'branch_manager' ? 'cashier' : 'branch_manager';
+      updateUi();
+    });
+
+    document.getElementById('addQueue').addEventListener('click', () => {
+      state.queue += 1;
+      updateUi();
+    });
+
+    document.getElementById('flushQueue').addEventListener('click', () => {
+      state.queue = 0;
+      updateUi();
+    });
+
+    closeDayBtn.addEventListener('click', () => {
+      if (!canCloseDay()) return;
+      state.variance = 0;
+      gateMsg.textContent = 'Day closed successfully (demo).';
+      updateUi();
+    });
+
+    updateUi();
+  </script>
+</body>
+</html>

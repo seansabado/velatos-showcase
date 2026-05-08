@@ -40,6 +40,7 @@ export type TranslationKey =
   | 'staff.punch.success_out'
   | 'staff.punch.geofence_warning'
   | 'staff.schedule.title'
+  | 'staff.schedule.no_schedule'
   | 'common.error.network'
   | 'common.error.unauthorized'
   | 'common.error.not_found'

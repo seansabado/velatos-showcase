@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { useStaffActions } from './useStaffActions';
 import { FAKE_CURRENT_STAFF, FAKE_SCHEDULE } from './fakeStaff';
 import { t } from '../i18n/i18n';
-import { formatTime } from '../shared/utils/formatDate';
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -68,7 +67,7 @@ function GeofenceWarning({
  */
 export function StaffPanel(): React.ReactElement {
   const staff = FAKE_CURRENT_STAFF;
-  const { punchIn, punchOut, clearException, state } = useStaffActions(staff.id, staff.branchId);
+  const { punchIn, punchOut, state } = useStaffActions(staff.id, staff.branchId);
   const [showGeofenceForm, setShowGeofenceForm] = useState(false);
   const [pendingPunchType, setPendingPunchType] = useState<'in' | 'out' | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -84,7 +83,7 @@ export function StaffPanel(): React.ReactElement {
   };
 
   const handlePunch = (type: 'in' | 'out'): void => {
-    const { result, distanceMeters } = simulateGeofenceCheck();
+    const { result } = simulateGeofenceCheck();
 
     if (result === 'outside') {
       setPendingPunchType(type);

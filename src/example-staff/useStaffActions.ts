@@ -19,8 +19,6 @@ type StaffActions = {
   state: PunchState;
 };
 
-const GEOFENCE_RADIUS_METERS = 100;
-
 /**
  * Manages staff punch-in/out with geofence validation and offline queue.
  *
@@ -40,8 +38,7 @@ export function useStaffActions(staffId: string, branchId: string): StaffActions
   const createPunch = (
     type: 'in' | 'out',
     geofenceResult: GeofenceResult,
-    distanceMeters: number,
-    reason?: string
+    distanceMeters: number
   ): AttendancePunch => ({
     id: generateId(),
     staffId,
@@ -59,7 +56,7 @@ export function useStaffActions(staffId: string, branchId: string): StaffActions
 
   const punchIn = useCallback(
     (geofenceResult: GeofenceResult, distanceMeters: number, reason?: string): void => {
-      const punch = createPunch('in', geofenceResult, distanceMeters, reason);
+      const punch = createPunch('in', geofenceResult, distanceMeters);
       setState({
         lastPunch: punch,
         isPunchedIn: true,
@@ -73,7 +70,7 @@ export function useStaffActions(staffId: string, branchId: string): StaffActions
 
   const punchOut = useCallback(
     (geofenceResult: GeofenceResult, distanceMeters: number, reason?: string): void => {
-      const punch = createPunch('out', geofenceResult, distanceMeters, reason);
+      const punch = createPunch('out', geofenceResult, distanceMeters);
       setState({
         lastPunch: punch,
         isPunchedIn: false,

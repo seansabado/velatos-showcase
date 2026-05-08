@@ -32,6 +32,9 @@ Think of this as an architectural portfolio: the kind of thinking that goes into
 | **Offline-first** | Local queue + reconciliation pattern for unreliable connectivity |
 | **Audit logging** | Append-only audit trail with actor, action, tenant, and timestamp |
 | **Cloud functions** | Callable function patterns: auth → tenant guard → business logic → audit |
+| **Permission model** | Action-level role gates with declarative React PermissionGate component |
+| **Runtime validation** | Boundary payload parsing for untrusted input before business logic |
+| **Finance operations** | Daily close and till reconciliation variance-gate pattern |
 | **Architecture decisions** | ADRs documenting the "why" behind key design choices |
 | **Unit tests** | Jest tests covering FSM guards and tenant isolation logic |
 | **Shared infrastructure** | Typed hooks, utilities, and domain types used across all surfaces |
@@ -75,10 +78,15 @@ src/
   example-manager/      Fake manager dashboard: branch metrics, approvals
   example-staff/        Fake staff panel: punch-in/out, schedule view
   example-rma/          Fake RMA module: 9-state FSM, line inspection
+  example-finance/      Fake finance module: till reconciliation + daily close
   example-functions/    Fake Cloud Functions: auth, tenant guard, audit
     __tests__/          Unit tests for tenant guard and callable patterns
+  shared/auth/          Permission utilities + React PermissionGate
   i18n/                 Fake JA/EN translation files + loader
   shared/               Cross-surface hooks, utils, and TypeScript types
+
+site/
+  index.html            GitHub Pages static interactive portfolio demo
 ```
 
 Start with [`docs/architecture.md`](docs/architecture.md) for the big picture, then explore the `src/` modules to see the patterns in action.
@@ -93,6 +101,7 @@ These are TypeScript/React examples — they illustrate patterns, not a deployab
 npm install
 npm run typecheck   # zero-error TypeScript check
 npm test            # Jest unit tests
+npm run test:ci     # Coverage thresholds (used by CI)
 ```
 
 ---

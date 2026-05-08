@@ -6,6 +6,8 @@ import { useBranchMetrics } from './useBranchMetrics';
 import { FAKE_EXCEPTIONS } from './fakeMetrics';
 import { formatCurrency } from '../shared/utils/formatCurrency';
 import { t } from '../i18n/i18n';
+import { PermissionGate } from '../shared/auth/PermissionGate';
+import type { AuthClaims } from '../shared/types/tenant';
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -64,6 +66,12 @@ function ExceptionRow({ exc, onApprove, onReject }: {
 export function ManagerDashboard(): React.ReactElement {
   const today = new Date().toISOString().slice(0, 10);
   const metricsState = useBranchMetrics('branch-shibuya', today);
+  const managerClaims: AuthClaims = {
+    uid: 'manager-sato',
+    tenantId: 'demo-tenant',
+    role: 'branch_manager',
+    branchId: 'branch-shibuya',
+  };
 
   const [exceptions, setExceptions] = useState(FAKE_EXCEPTIONS);
   const [dailyClosed, setDailyClosed] = useState(false);
@@ -113,9 +121,16 @@ export function ManagerDashboard(): React.ReactElement {
       {exceptions.length === 0 ? (
         <div style={{ color: '#888', fontSize: 13 }}>例外はありません</div>
       ) : (
-        exceptions.map((exc) => (
-          <ExceptionRow key={exc.id} exc={exc} onApprove={handleApprove} onReject={handleReject} />
-        ))
+        <PermissionGate
+          claims={managerClaims}
+          tenantId="demo-tenant"
+          action="manager.exception.approve"
+          fallback={<div style={{ color: '#b00', fontSize: 13 }}>権限不足のため例外処理は表示されません。</div>}
+        >
+          {exceptions.map((exc) => (
+            <ExceptionRow key={exc.id} exc={exc} onApprove={handleApprove} onReject={handleReject} />
+          ))}
+        </PermissionGate>
       )}
 
       {/* Daily close */}
