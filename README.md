@@ -130,9 +130,13 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 ## Demo Video
 
-- Video link: _coming soon_
+- Watch on YouTube: https://youtu.be/IGDm8o8d19k
+- Click preview:
+
+[![Watch the demo video](https://img.youtube.com/vi/IGDm8o8d19k/maxresdefault.jpg)](https://youtu.be/IGDm8o8d19k)
+
 - Recording outline: [docs/demo-video-outline.md](docs/demo-video-outline.md)
-- Recommended placement once recorded: GitHub README + repository About website/video link
+- Recommended placement: GitHub README + repository About website/video link
 
 ---
 
