@@ -38,9 +38,29 @@ https://www.linkedin.com/in/seanraynon/
 
 ## Read Path by Audience
 
-- Recruiter (2-3 min): [README.md](README.md), [docs/case-study.md](docs/case-study.md), live demo at https://seansabado.github.io/velatos-showcase/index.html
-- Engineering Manager (5-10 min): [docs/architecture.md](docs/architecture.md), [docs/security-posture.md](docs/security-posture.md), [docs/incident-walkthrough.md](docs/incident-walkthrough.md), [docs/operations-runbook.md](docs/operations-runbook.md)
-- Architect or CTO (10-15 min): [docs/observability.md](docs/observability.md), [docs/data-contracts.md](docs/data-contracts.md), [docs/known-limits-and-versioning.md](docs/known-limits-and-versioning.md), [docs/adoption-blueprint.md](docs/adoption-blueprint.md), [docs/evolution.md](docs/evolution.md)
+- Recruiter (2-3 min)
+  - Start here: [docs/case-study.md](docs/case-study.md)
+  - Then: [README.md](README.md), live demo at https://seansabado.github.io/velatos-showcase/index.html
+  - What to look for: fast proof signals (CI, tests, coverage, live demo)
+  - Expected outcome: confidence in scope and quality in under 3 minutes
+
+- Engineering Manager (5-8 min)
+  - Start here: [docs/architecture.md](docs/architecture.md)
+  - Then: [docs/security-posture.md](docs/security-posture.md), [docs/incident-walkthrough.md](docs/incident-walkthrough.md), [docs/operations-runbook.md](docs/operations-runbook.md)
+  - Live proof check: CI workflows and scenario modes in the live demo
+  - What to look for: reliability controls, test discipline, and operational ownership
+  - Expected outcome: confidence in execution quality and incident readiness
+
+- Architect / CTO (10-15 min)
+  - Start here: [docs/adoption-blueprint.md](docs/adoption-blueprint.md)
+  - Then: [docs/observability.md](docs/observability.md), [docs/data-contracts.md](docs/data-contracts.md), [docs/known-limits-and-versioning.md](docs/known-limits-and-versioning.md), [docs/evolution.md](docs/evolution.md)
+  - Decision artifact set: security posture + versioning policy + evolution log
+  - What to look for: tradeoffs, rollout feasibility, and governance maturity
+  - Expected outcome: confidence in strategic fit and controlled adoption path
+
+- Deep-Dive Tracks (optional)
+  - Reliability: [docs/operations-runbook.md](docs/operations-runbook.md), [docs/incident-walkthrough.md](docs/incident-walkthrough.md)
+  - Contracts & Observability: [docs/data-contracts.md](docs/data-contracts.md), [docs/observability.md](docs/observability.md)
 
 ---
 
