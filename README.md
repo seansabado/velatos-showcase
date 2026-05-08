@@ -76,7 +76,7 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 ## Hiring Signals
 
-[![Build](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Pages](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml) [![Coverage](https://img.shields.io/badge/coverage-95.23%25-brightgreen)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0d6c63)](https://seansabado.github.io/velatos-showcase/)
+[![Build](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Pages](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml/badge.svg)](https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml) [![Coverage](https://img.shields.io/badge/coverage-95.23%25-brightgreen)](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml) [![Live Demo](https://img.shields.io/badge/demo-GitHub%20Pages-0d6c63)](https://seansabado.github.io/velatos-showcase/index.html)
 
 - CI-enforced quality gates: typecheck + coverage tests on push and PR
 - Enterprise architecture depth: multi-tenant isolation, offline-first queueing, and append-only audit trail
@@ -88,7 +88,7 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 ## Live Demo
 
-- Interactive static demo: https://seansabado.github.io/velatos-showcase/
+- Interactive static demo: https://seansabado.github.io/velatos-showcase/index.html
 - Pages workflow: https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml
 
 ---
