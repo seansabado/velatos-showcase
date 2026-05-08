@@ -2,21 +2,27 @@
 // Demonstrates shift session management with offline queue support
 // Not connected to any real system
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { ShiftSession, Order } from '../shared/types/pos';
 import { generateId } from '../shared/utils/id';
+import { computeRetryDelayMs, simulateServerSync } from './syncEngine';
 
-type QueuedMutation = {
+export type QueuedMutation = {
   id: string;
   type: 'CREATE_ORDER' | 'VOID_ORDER' | 'CLOSE_SHIFT';
   payload: unknown;
   createdAt: string;
   attempts: number;
+  lastError: string | null;
+  nextRetryAt: string | null;
 };
 
 type ShiftState = {
   session: ShiftSession | null;
   offlineQueue: QueuedMutation[];
+  deadLetterQueue: QueuedMutation[];
+  syncStatus: 'idle' | 'syncing' | 'error';
+  lastSyncAt: string | null;
   isOnline: boolean;
 };
 
@@ -26,8 +32,11 @@ type ShiftActions = {
   addOrder: (order: Omit<Order, 'id' | 'syncedAt'>) => string;
   voidOrder: (orderId: string, reason: string) => void;
   flushQueue: () => Promise<void>;
+  retryFailedMutations: () => void;
   state: ShiftState;
 };
+
+const MAX_SYNC_ATTEMPTS = 3;
 
 /**
  * Manages a POS shift session with offline queue support.
@@ -42,8 +51,15 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
   const [state, setState] = useState<ShiftState>({
     session: null,
     offlineQueue: [],
+    deadLetterQueue: [],
+    syncStatus: 'idle',
+    lastSyncAt: null,
     isOnline,
   });
+
+  useEffect(() => {
+    setState((prev) => ({ ...prev, isOnline }));
+  }, [isOnline]);
 
   const openShift = useCallback((registerId: string, cashierId: string): void => {
     const session: ShiftSession = {
@@ -69,6 +85,8 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
       payload: { ...order, id, syncedAt: null },
       createdAt: new Date().toISOString(),
       attempts: 0,
+      lastError: null,
+      nextRetryAt: null,
     };
 
     setState((prev) => ({
@@ -93,6 +111,8 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
       payload: { orderId, reason, voidedAt: new Date().toISOString() },
       createdAt: new Date().toISOString(),
       attempts: 0,
+      lastError: null,
+      nextRetryAt: null,
     };
 
     setState((prev) => ({
@@ -121,15 +141,89 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
    * moves to error queue on permanent failure.
    */
   const flushQueue = useCallback(async (): Promise<void> => {
-    for (const mutation of state.offlineQueue) {
-      // Simulated server sync — replace with real API call in production
-      await new Promise<void>((resolve) => setTimeout(resolve, 50));
-      setState((prev) => ({
-        ...prev,
-        offlineQueue: prev.offlineQueue.filter((m) => m.id !== mutation.id),
-      }));
+    if (!state.isOnline || state.offlineQueue.length === 0) {
+      return;
     }
-  }, [state.offlineQueue]);
 
-  return { openShift, closeShift, addOrder, voidOrder, flushQueue, state };
+    setState((prev) => ({ ...prev, syncStatus: 'syncing' }));
+
+    let hadError = false;
+
+    for (const queued of state.offlineQueue) {
+      if (queued.nextRetryAt && new Date(queued.nextRetryAt).getTime() > Date.now()) {
+        hadError = true;
+        continue;
+      }
+
+      const result = await simulateServerSync(queued, state.isOnline);
+
+      if (result.ok) {
+        setState((prev) => ({
+          ...prev,
+          offlineQueue: prev.offlineQueue.filter((m) => m.id !== queued.id),
+        }));
+        continue;
+      }
+
+      hadError = true;
+      setState((prev) => {
+        const nextAttempts = queued.attempts + 1;
+        const exceedsRetries = nextAttempts >= MAX_SYNC_ATTEMPTS;
+        const nextRetryAt = new Date(Date.now() + computeRetryDelayMs(nextAttempts)).toISOString();
+
+        if (exceedsRetries) {
+          const failedMutation: QueuedMutation = {
+            ...queued,
+            attempts: nextAttempts,
+            lastError: result.error,
+            nextRetryAt,
+          };
+
+          return {
+            ...prev,
+            offlineQueue: prev.offlineQueue.filter((m) => m.id !== queued.id),
+            deadLetterQueue: [...prev.deadLetterQueue, failedMutation],
+          };
+        }
+
+        return {
+          ...prev,
+          offlineQueue: prev.offlineQueue.map((m) =>
+            m.id === queued.id
+              ? {
+                  ...m,
+                  attempts: nextAttempts,
+                  lastError: result.error,
+                  nextRetryAt,
+                }
+              : m
+          ),
+        };
+      });
+    }
+
+    setState((prev) => ({
+      ...prev,
+      syncStatus: hadError ? 'error' : 'idle',
+      lastSyncAt: new Date().toISOString(),
+    }));
+  }, [state.offlineQueue, state.isOnline]);
+
+  const retryFailedMutations = useCallback((): void => {
+    setState((prev) => ({
+      ...prev,
+      offlineQueue: [
+        ...prev.offlineQueue,
+        ...prev.deadLetterQueue.map((m) => ({
+          ...m,
+          attempts: 0,
+          lastError: null,
+          nextRetryAt: null,
+        })),
+      ],
+      deadLetterQueue: [],
+    }));
+  }, []);
+
+  return { openShift, closeShift, addOrder, voidOrder, flushQueue, retryFailedMutations, state };
 }

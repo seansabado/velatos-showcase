@@ -1,5 +1,7 @@
 # velatos-showcase
 
+Enterprise ERP architecture showcase: multi-tenant isolation, offline-first operations, and auditable workflows.
+
 ![CI](https://github.com/seansabado/velatos-showcase/actions/workflows/ci.yml/badge.svg)
 
 ---
@@ -18,9 +20,57 @@ This repository is a **safe, non-proprietary showcase** of enterprise ERP archit
 
 Think of this as an architectural portfolio: the kind of thinking that goes into a serious, production-grade ERP platform targeting Japanese boutique retail.
 
+Suggested GitHub repository tagline (About box):
+`Enterprise ERP architecture showcase: multi-tenant, offline-first, auditable workflows.`
+
 ![VelatOS Architecture Banner](docs/assets/architecture-banner.svg)
 
 Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
+
+---
+
+## Visual Preview
+
+![UI Preview](docs/assets/ui-preview.svg)
+
+---
+
+## Architecture Diagram
+
+```mermaid
+flowchart LR
+  A[POS Tablet / Manager / Staff / Admin] --> B[Cloud Function Pipeline]
+  B --> C[Auth Verification]
+  C --> D[Tenant Guard + Role Check]
+  D --> E[Runtime Validation]
+  E --> F[Domain Logic: POS FSM, RMA FSM, Reconciliation]
+  F --> G[Tenant-scoped Data Store]
+  F --> H[Append-only Audit Log]
+  A --> I[Offline Queue + Retry + Dead-letter]
+  I --> B
+```
+
+---
+
+## Tech Stack
+
+- Language: TypeScript (strict mode)
+- UI: React 18 patterns (hook-driven modules)
+- Testing: Jest + ts-jest with coverage gates
+- CI/CD: GitHub Actions (typecheck, tests, Pages deploy)
+- Docs: Markdown + Mermaid diagrams + ADRs
+- Demo hosting: GitHub Pages static interactive demo
+
+---
+
+## About My Role
+
+I built this showcase end-to-end as Founder/CTO to demonstrate production-style ERP engineering decisions without exposing proprietary VelatOS code.
+
+- System design: tenant boundaries, offline-first behavior, and auditability model
+- Application architecture: modular surfaces (POS, manager, staff, admin) with shared typed primitives
+- Backend contract design: auth/tenant/validation/audit pipeline for callable functions
+- Operational quality: CI gates, coverage enforcement, and explicit design decisions (ADRs)
 
 ---
 
@@ -33,6 +83,13 @@ Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
 - Production-style domain modeling: POS state machine, RMA lifecycle FSM, and finance reconciliation gates
 - Security posture by design: token-claim tenant boundary + runtime payload validation before business logic
 - Reviewable engineering artifacts: ADRs, sequence diagrams, and an interactive GitHub Pages demo
+
+---
+
+## Live Demo
+
+- Interactive static demo: https://seansabado.github.io/velatos-showcase/
+- Pages workflow: https://github.com/seansabado/velatos-showcase/actions/workflows/pages.yml
 
 ---
 
@@ -76,6 +133,7 @@ docs/                   Architecture and design decision records
   case-study.md         One-page recruiter-focused architecture brief
   assets/               Visual assets for README and docs
     architecture-banner.svg
+    ui-preview.svg
   architecture.md       High-level system diagram and surface map
   module-design.md      How modules are bounded and composed
   i18n-strategy.md      Dual-language (JA/EN) approach
@@ -122,6 +180,31 @@ npm run typecheck   # zero-error TypeScript check
 npm test            # Jest unit tests
 npm run test:ci     # Coverage thresholds (used by CI)
 ```
+
+---
+
+## Design Tradeoffs (Why This Architecture)
+
+- Function-layer tenant checks over payload trust:
+  Prevents cross-tenant spoofing by always deriving scope from verified token claims.
+- Offline-first queue with explicit retry policy:
+  Prioritizes business continuity in stores with unstable networks, at the cost of higher sync complexity.
+- Append-only audit log:
+  Improves traceability and forensics while increasing storage footprint.
+- Strict typing + runtime validation:
+  Prevents a false sense of safety where compile-time types meet untrusted runtime input.
+- Modular vertical slices:
+  Keeps boundaries clear and reviewable, with some upfront overhead in shared contract maintenance.
+
+---
+
+## What I'd Improve With More Time
+
+1. Add persistence for offline/dead-letter queues (IndexedDB) and replay metrics dashboard.
+2. Introduce contract tests for function pipeline stages and richer failure injections.
+3. Add story-driven UI flows per module (POS checkout, RMA resolution, daily close exceptions).
+4. Generate typed translation keys automatically from source locale JSON at build time.
+5. Replace static coverage badge with automated badge generation in CI.
 
 ---
 

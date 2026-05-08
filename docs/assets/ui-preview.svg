@@ -1,0 +1,46 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6F8F7"/>
+      <stop offset="1" stop-color="#E7EEEB"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#0F4C48"/>
+      <stop offset="1" stop-color="#1D6C66"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="80" y="52" width="1120" height="616" rx="20" fill="#FFFFFF" stroke="#D4DEDA"/>
+
+  <rect x="80" y="52" width="1120" height="86" rx="20" fill="url(#header)"/>
+  <text x="112" y="106" fill="#FFFFFF" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">VelatOS POS Demo</text>
+  <text x="968" y="106" fill="#D2EFEA" font-family="Segoe UI, Arial, sans-serif" font-size="18">Online • Queue: 2 • Retry Needed: 1</text>
+
+  <rect x="112" y="168" width="332" height="156" rx="12" fill="#F7FBFA" stroke="#DDE8E5"/>
+  <text x="132" y="206" fill="#1E3D3B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Shift State</text>
+  <text x="132" y="238" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">state: shift_open</text>
+  <text x="132" y="266" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">grossRevenue: ¥126,400</text>
+  <text x="132" y="294" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">transactionCount: 17</text>
+
+  <rect x="472" y="168" width="332" height="156" rx="12" fill="#F7FBFA" stroke="#DDE8E5"/>
+  <text x="492" y="206" fill="#1E3D3B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Sync Engine</text>
+  <text x="492" y="238" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">status: syncing</text>
+  <text x="492" y="266" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">retryPolicy: 1s / 3s / 8s</text>
+  <text x="492" y="294" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">deadLetterQueue: enabled</text>
+
+  <rect x="832" y="168" width="336" height="156" rx="12" fill="#F7FBFA" stroke="#DDE8E5"/>
+  <text x="852" y="206" fill="#1E3D3B" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">Security Gate</text>
+  <text x="852" y="238" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">auth -> tenant guard -> validation</text>
+  <text x="852" y="266" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">role: branch_manager</text>
+  <text x="852" y="294" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="17">audit: append-only</text>
+
+  <rect x="112" y="356" width="1056" height="270" rx="12" fill="#F8FAFA" stroke="#E2EAE8"/>
+  <text x="132" y="392" fill="#1E3D3B" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">Realistic Flow Preview</text>
+  <text x="132" y="428" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">1) Cashier confirms order while online</text>
+  <text x="132" y="458" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">2) Order mutation queued optimistically</text>
+  <text x="132" y="488" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">3) Sync runs; VOID_ORDER conflicts on attempt #1</text>
+  <text x="132" y="518" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">4) Backoff applied; mutation retries and recovers</text>
+  <text x="132" y="548" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">5) Hard failures move to dead-letter queue for manual retry</text>
+  <text x="132" y="578" fill="#355E5A" font-family="Segoe UI, Arial, sans-serif" font-size="18">6) Shift close remains blocked while unsynced work exists</text>
+</svg>

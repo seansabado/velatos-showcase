@@ -1,7 +1,7 @@
 // src/example-pos/index.tsx
 // Fake POS application shell — demonstrates pattern, not real POS logic
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMachineState } from './useMachineState';
 import { useShiftSession } from './useShiftSession';
 import { useOnlineStatus } from '../shared/hooks/useOnlineStatus';
@@ -100,9 +100,30 @@ function OrderControls({
 export function PosApp(): React.ReactElement {
   const { online } = useOnlineStatus();
   const { state: machineState, send, canSend } = useMachineState('idle');
-  const { state: shiftState, openShift, addOrder } = useShiftSession(online);
+  const { state: shiftState, openShift, addOrder, flushQueue, retryFailedMutations } = useShiftSession(online);
+  const [syncMessage, setSyncMessage] = useState<string | null>(null);
 
   const register = FAKE_REGISTERS[0];
+
+  useEffect(() => {
+    if (online && shiftState.offlineQueue.length > 0) {
+      void flushQueue();
+    }
+  }, [online, shiftState.offlineQueue.length, flushQueue]);
+
+  useEffect(() => {
+    if (shiftState.syncStatus === 'error') {
+      setSyncMessage('一部の同期に失敗しました。再試行が必要です。');
+      return;
+    }
+
+    if (shiftState.syncStatus === 'syncing') {
+      setSyncMessage('同期中...');
+      return;
+    }
+
+    setSyncMessage(null);
+  }, [shiftState.syncStatus]);
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 24, maxWidth: 480 }}>
@@ -120,6 +141,32 @@ export function PosApp(): React.ReactElement {
             未同期: {shiftState.offlineQueue.length}件
           </span>
         )}
+        {shiftState.deadLetterQueue.length > 0 && (
+          <span style={{ marginLeft: 12, color: '#b00020', fontSize: 12 }}>
+            要対応: {shiftState.deadLetterQueue.length}件
+          </span>
+        )}
+      </div>
+
+      {syncMessage && (
+        <div style={{ marginBottom: 12, fontSize: 12, color: shiftState.syncStatus === 'error' ? '#b00020' : '#666' }}>
+          {syncMessage}
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+        <button
+          onClick={() => void flushQueue()}
+          disabled={!online || shiftState.offlineQueue.length === 0 || shiftState.syncStatus === 'syncing'}
+        >
+          手動同期
+        </button>
+        <button
+          onClick={retryFailedMutations}
+          disabled={shiftState.deadLetterQueue.length === 0}
+        >
+          失敗分を再投入
+        </button>
       </div>
 
       {/* Shift controls */}
