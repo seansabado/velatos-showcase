@@ -2,15 +2,21 @@
 // Demonstrates shift session management with offline queue support
 // Not connected to any real system
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { ShiftSession, Order } from '../shared/types/pos';
 import { generateId } from '../shared/utils/id';
-import { computeRetryDelayMs, simulateServerSync } from './syncEngine';
+import {
+  computeRetryDelayMs,
+  simulateServerSync,
+  createSyncRuntimeState,
+  getIdempotencyKey,
+} from './syncEngine';
 
 export type QueuedMutation = {
   id: string;
   type: 'CREATE_ORDER' | 'VOID_ORDER' | 'CLOSE_SHIFT';
   payload: unknown;
+  idempotencyKey: string;
   createdAt: string;
   attempts: number;
   lastError: string | null;
@@ -48,6 +54,7 @@ const MAX_SYNC_ATTEMPTS = 3;
  * - The queue is persisted to localStorage in production; here it's in-memory.
  */
 export function useShiftSession(isOnline: boolean): ShiftActions {
+  const syncRuntimeRef = useRef(createSyncRuntimeState());
   const [state, setState] = useState<ShiftState>({
     session: null,
     offlineQueue: [],
@@ -83,11 +90,13 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
       id: generateId(),
       type: 'CREATE_ORDER',
       payload: { ...order, id, syncedAt: null },
+      idempotencyKey: '',
       createdAt: new Date().toISOString(),
       attempts: 0,
       lastError: null,
       nextRetryAt: null,
     };
+    mutation.idempotencyKey = getIdempotencyKey(mutation);
 
     setState((prev) => ({
       ...prev,
@@ -109,11 +118,13 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
       id: generateId(),
       type: 'VOID_ORDER',
       payload: { orderId, reason, voidedAt: new Date().toISOString() },
+      idempotencyKey: '',
       createdAt: new Date().toISOString(),
       attempts: 0,
       lastError: null,
       nextRetryAt: null,
     };
+    mutation.idempotencyKey = getIdempotencyKey(mutation);
 
     setState((prev) => ({
       ...prev,
@@ -155,7 +166,7 @@ export function useShiftSession(isOnline: boolean): ShiftActions {
         continue;
       }
 
-      const result = await simulateServerSync(queued, state.isOnline);
+      const result = await simulateServerSync(queued, state.isOnline, syncRuntimeRef.current);
 
       if (result.ok) {
         setState((prev) => ({

@@ -86,6 +86,21 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 
 ---
 
+## Quick Proof Snapshot
+
+| Signal | Current Value |
+|---|---|
+| Example modules (`src/example-*`) | 6 |
+| Test suites (`*.test.ts`) | 8 |
+| Coverage (statements / branches / functions / lines) | 96.39% / 81.15% / 100% / 97.16% |
+| Architecture Decision Records | 3 |
+| Sequence diagrams | 3 |
+
+- Security posture doc: [docs/security-posture.md](docs/security-posture.md)
+- One-page recruiter brief: [docs/case-study.md](docs/case-study.md)
+
+---
+
 ## Live Demo
 
 - Interactive static demo: https://seansabado.github.io/velatos-showcase/index.html
@@ -107,6 +122,7 @@ I built this showcase end-to-end as Founder/CTO to demonstrate production-style 
 | **Cloud functions** | Callable function patterns: auth → tenant guard → business logic → audit |
 | **Permission model** | Action-level role gates with declarative React PermissionGate component |
 | **Runtime validation** | Boundary payload parsing for untrusted input before business logic |
+| **Replay protection** | Idempotency-key sync handling with deduped success semantics |
 | **Finance operations** | Daily close and till reconciliation variance-gate pattern |
 | **Architecture decisions** | ADRs documenting the "why" behind key design choices |
 | **Unit tests** | Jest tests covering FSM guards and tenant isolation logic |
@@ -131,6 +147,7 @@ All data, IDs, and logic in this repo are **fabricated for demonstration purpose
 ```
 docs/                   Architecture and design decision records
   case-study.md         One-page recruiter-focused architecture brief
+  security-posture.md   Threat assumptions, controls, and residual risks
   assets/               Visual assets for README and docs
     architecture-banner.svg
     ui-preview.svg

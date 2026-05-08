@@ -6,7 +6,26 @@ export type SyncMutation = {
   type: 'CREATE_ORDER' | 'VOID_ORDER' | 'CLOSE_SHIFT';
   payload: unknown;
   attempts: number;
+  idempotencyKey?: string;
 };
+
+export type SyncRuntimeState = {
+  processedIdempotencyKeys: Set<string>;
+};
+
+export function createSyncRuntimeState(): SyncRuntimeState {
+  return {
+    processedIdempotencyKeys: new Set<string>(),
+  };
+}
+
+export function getIdempotencyKey(mutation: SyncMutation): string {
+  if (mutation.idempotencyKey && mutation.idempotencyKey.trim() !== '') {
+    return mutation.idempotencyKey;
+  }
+
+  return `${mutation.type}:${mutation.id}`;
+}
 
 export function computeRetryDelayMs(attempts: number): number {
   if (attempts <= 1) return 1_000;
@@ -16,10 +35,16 @@ export function computeRetryDelayMs(attempts: number): number {
 
 export async function simulateServerSync(
   mutation: SyncMutation,
-  online: boolean
-): Promise<{ ok: true } | { ok: false; error: string }> {
+  online: boolean,
+  runtimeState: SyncRuntimeState = createSyncRuntimeState()
+): Promise<{ ok: true; deduped: boolean } | { ok: false; error: string }> {
   if (!online) {
     return { ok: false, error: 'Network offline' };
+  }
+
+  const idempotencyKey = getIdempotencyKey(mutation);
+  if (runtimeState.processedIdempotencyKeys.has(idempotencyKey)) {
+    return { ok: true, deduped: true };
   }
 
   await new Promise<void>((resolve) => setTimeout(resolve, 50));
@@ -36,5 +61,6 @@ export async function simulateServerSync(
     return { ok: false, error: 'Conflict: order lock not released yet' };
   }
 
-  return { ok: true };
+  runtimeState.processedIdempotencyKeys.add(idempotencyKey);
+  return { ok: true, deduped: false };
 }

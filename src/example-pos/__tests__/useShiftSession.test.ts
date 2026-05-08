@@ -1,4 +1,9 @@
-import { computeRetryDelayMs, simulateServerSync } from '../syncEngine';
+import {
+  computeRetryDelayMs,
+  simulateServerSync,
+  getIdempotencyKey,
+  createSyncRuntimeState,
+} from '../syncEngine';
 import type { SyncMutation } from '../syncEngine';
 
 function makeMutation(overrides: Partial<SyncMutation> = {}): SyncMutation {
@@ -37,7 +42,7 @@ describe('simulateServerSync', () => {
     const second = await simulateServerSync(makeMutation({ type: 'VOID_ORDER', attempts: 1 }), true);
 
     expect(first).toEqual({ ok: false, error: 'Conflict: order lock not released yet' });
-    expect(second).toEqual({ ok: true });
+    expect(second).toEqual({ ok: true, deduped: false });
   });
 
   it('fails on forced failure payload', async () => {
@@ -50,6 +55,29 @@ describe('simulateServerSync', () => {
 
   it('succeeds for normal create order mutation when online', async () => {
     const result = await simulateServerSync(makeMutation(), true);
-    expect(result).toEqual({ ok: true });
+    expect(result).toEqual({ ok: true, deduped: false });
+  });
+
+  it('returns deduped success when the same idempotency key is replayed', async () => {
+    const runtimeState = createSyncRuntimeState();
+    const mutation = makeMutation({ id: 'm-idempotent-1', idempotencyKey: 'CREATE_ORDER:demo-123' });
+
+    const first = await simulateServerSync(mutation, true, runtimeState);
+    const second = await simulateServerSync(mutation, true, runtimeState);
+
+    expect(first).toEqual({ ok: true, deduped: false });
+    expect(second).toEqual({ ok: true, deduped: true });
+  });
+});
+
+describe('getIdempotencyKey', () => {
+  it('uses explicit key when provided', () => {
+    const key = getIdempotencyKey(makeMutation({ idempotencyKey: 'explicit-key-001' }));
+    expect(key).toBe('explicit-key-001');
+  });
+
+  it('falls back to deterministic type:id key', () => {
+    const key = getIdempotencyKey(makeMutation({ id: 'm-abc', type: 'VOID_ORDER' }));
+    expect(key).toBe('VOID_ORDER:m-abc');
   });
 });
