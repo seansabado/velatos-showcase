@@ -24,6 +24,16 @@ Quick read for hiring review: [One-Page Case Study](docs/case-study.md)
 
 ---
 
+## Hiring Signals
+
+- CI-enforced quality gates: typecheck + coverage tests on push and PR
+- Enterprise architecture depth: multi-tenant isolation, offline-first queueing, and append-only audit trail
+- Production-style domain modeling: POS state machine, RMA lifecycle FSM, and finance reconciliation gates
+- Security posture by design: token-claim tenant boundary + runtime payload validation before business logic
+- Reviewable engineering artifacts: ADRs, sequence diagrams, and an interactive GitHub Pages demo
+
+---
+
 ## What This Repo Demonstrates
 
 | Area | Pattern |
