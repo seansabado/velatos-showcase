@@ -5,10 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  typecheck-and-test:
-    name: TypeScript Check & Tests
+  typecheck:
+    name: TypeScript Check
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +28,42 @@ jobs:
       - name: TypeScript typecheck
         run: npm run typecheck
 
+  tests:
+    name: Unit Tests + Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run tests with coverage gates
         run: npm run test:ci
+
+  docs-smoke:
+    name: Docs & Demo Smoke Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate key docs and demo files exist
+        run: |
+          test -f README.md
+          test -f docs/architecture.md
+          test -f docs/case-study.md
+          test -f site/index.html
+
+      - name: Ensure README references live demo and pages workflow
+        run: |
+          grep -q "https://seansabado.github.io/velatos-showcase/" README.md
+          grep -q "actions/workflows/pages.yml" README.md
